@@ -1,47 +1,44 @@
+import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useLayoutEffect, useRef } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const component = useRef(null);
-  const slider = useRef(null);
-  const textLines = useRef([]);
+  const textRefs = useRef([]);
 
-  useLayoutEffect(() => {
-    let ctx = gsap.context(() => {
-      // Create main timeline
-      const tl = gsap.timeline({
-        defaults: {
-          ease: "power3.inOut",
-          duration: 1
-        }
+  // Initialize text refs
+  const addTextRef = (el, index) => {
+    if (el) textRefs.current[index] = el;
+  };
+
+  // Simple animation that ensures visibility
+  useEffect(() => {
+    const textElements = textRefs.current.filter(Boolean);
+    if (!textElements.length) return;
+
+    // Set initial opacity to 0
+    gsap.set(textElements, { opacity: 0, y: 50 });
+
+    // Create animation
+    const tl = gsap.timeline();
+    tl.to(textElements, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2,
+      ease: "power3.out"
+    });
+
+    // Create floating animation
+    textElements.forEach((el, index) => {
+      gsap.to(el, {
+        y: "10px",
+        duration: 1.5 + index * 0.2,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        delay: 1
       });
-
-      // Stagger the text lines from opacity 0 and different x positions
-      tl.from(textLines.current, {
-        opacity: 0,
-        x: (index) => [100, -100, 100][index], // Alternate directions
-        duration: 1.5,
-        stagger: 0.2,
-        ease: "power4.out"
-      });
-
-      // Add continuous floating animation
-      textLines.current.forEach((line, index) => {
-        gsap.to(line, {
-          y: "10px",
-          duration: 1.5 + index * 0.2,
-          ease: "power1.inOut",
-          yoyo: true,
-          repeat: -1
-        });
-      });
-
-    }, component);
-
-    return () => ctx.revert();
+    });
   }, []);
 
   return (
@@ -60,10 +57,7 @@ export default function Hero() {
       {/* Content Container */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center">
         {/* Text Container */}
-        <div 
-          ref={slider}
-          className="flex flex-col items-center gap-4 px-4"
-        >
+        <div className="flex flex-col items-center gap-4 px-4">
           {[
             { text: "Hi, I'm Njuguna", className: "text-[#777764]" },
             { text: "Hi, I'm Njuguna", className: "font-outline-3 text-transparent" },
@@ -74,8 +68,8 @@ export default function Hero() {
               className="title overflow-hidden py-2 2xl:py-4"
             >
               <h1 
-                ref={el => textLines.current[index] = el}
-                className={`font-grotesk text-[clamp(3rem,8vw,6rem)] font-bold uppercase tracking-tighter ${item.className}`}
+                ref={el => addTextRef(el, index)}
+                className={`font-grotesk text-[clamp(3rem,8vw,6rem)] font-bold uppercase tracking-tighter ${item.className} will-change-transform`}
               >
                 {item.text}
               </h1>

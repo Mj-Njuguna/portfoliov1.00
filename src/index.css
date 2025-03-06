@@ -70,11 +70,30 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
   }
+  
+  /* Animation performance optimizations */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer components {
   .button {
     @apply bg-accent-300 px-8 py-3 text-secondary-200 rounded-full;
+  }
+  
+  /* Animation optimization classes */
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .animate-on-scroll {
+    will-change: transform, opacity;
   }
 }
 
@@ -119,4 +138,14 @@
 
 .animate-scrollDown {
   animation: scrollDown 1.5s ease-in-out infinite;
+}
+
+/* Optimize animation performance for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

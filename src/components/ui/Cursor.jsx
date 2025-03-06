@@ -1,56 +1,31 @@
-import { useEffect, useState, useRef } from "react"; 
-import { gsap } from "gsap";
+import { useState, useEffect } from "react"; 
+import { useCursorAnimation } from "../../hooks/useAnimations";
 
 export default function Cursor() {
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
-  const curs = useRef(null);
-  const svg = useRef(null);
+  const { cursorRef, svgRef } = useCursorAnimation();
 
+  // Handle cursor movement
+  const handleMouseMove = (e) => {
+    setCursor({ x: e.clientX, y: e.clientY });
+  };
+
+  // Add event listener for mouse movement
   useEffect(() => {
-    const images = document.querySelectorAll(".img");
-
-    const tl = gsap.timeline({ paused: true });
-
-    tl.to(curs.current, { height: "112px", width:"112px", backgroundColor: "#EBB309", ease: "expo.inout" }).to(
-      svg.current,
-      { opacity: 1, width: "96px", height:"96px" },
-      0
-    );
-
-    images.forEach((img) => {
-      img.addEventListener("mouseenter", function () {
-        tl.play();
-      });
-
-      img.addEventListener("mouseleave", function () {
-        tl.reverse();
-        tl.eventCallback("onReverseComplete", function () {
-          gsap.set(svg.current, { opacity: 0 });
-          gsap.set(curs.current, { height: "12px", width:"12px", backgroundColor: "#EBB309" });
-        });
-      });
-    });
-
-    function moveCursor(e) {
-      setCursor({ x: e.clientX, y: e.clientY });
-    }
-    document.addEventListener("mousemove", moveCursor);
-
+    document.addEventListener("mousemove", handleMouseMove);
     return () => {
-      document.removeEventListener("mousemove", moveCursor);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
-  const { x, y } = cursor;
-
   return (
     <div
-      ref={curs}
-      className="cursor pointer-events-none fixed left-1/2 top-1/2 z-[999] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#EBB309] sm:flex"
-      style={{ left: `${x}px`, top: `${y}px` }}
+      ref={cursorRef}
+      className="cursor pointer-events-none fixed left-1/2 top-1/2 z-[999] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#EBB309] sm:flex will-change-transform"
+      style={{ left: `${cursor.x}px`, top: `${cursor.y}px` }}
     >
       <svg
-        ref={svg}
+        ref={svgRef}
         xmlns="http://www.w3.org/2000/svg"
         className="scale-50 opacity-0"
         width="24"
