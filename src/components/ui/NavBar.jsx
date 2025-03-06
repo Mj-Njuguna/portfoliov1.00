@@ -121,7 +121,7 @@ export default function NavBar({ sectionRefs }) {
   return (
     <header
       ref={navBar}
-      className={`fixed top-0 z-50 flex w-full -translate-y-full items-center justify-between px-5 py-3 transition-all duration-300 backdrop-blur-[2px] bg-transparent ${
+      className={`fixed top-0 z-50 flex w-full -translate-y-full items-center justify-between px-5 py-3 transition-all duration-300 backdrop-blur-[3px] bg-transparent{
         isHeroSection 
           ? '' 
           : 'shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)]'
@@ -130,11 +130,11 @@ export default function NavBar({ sectionRefs }) {
       <a 
         href="#hero" 
         aria-label="Logo" 
-        className="z-50 text-xl font-bold text-[#70705C]"
+        className="z-50 text-xl font-bold text-[#777764]"
       >
         &copy; JesseNjuguna
       </a>
-      <nav className="space-x-7 font-grotesk text-body-3 sm:block">
+      <nav className="space-x-7 font-grotesk text-body-3 sm:block text-bold">
         {[ 
           { href: "#about", label: "about" },
           { href: "#services", label: "services" },
