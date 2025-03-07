@@ -13,14 +13,14 @@ export default function About() {
       <Heading title="about me" />
       <div className="mt-10 flex flex-col items-start gap-8 md:flex-row lg:gap-10 ">
         <div className="top-28 overflow-hidden rounded-md md:sticky md:w-1/2">
-          {/* <img
+          <img
             loading="lazy"
-            className="aspect-square h-auto w-full rounded-md object-cover object-center md:aspect-auto"
+            className="aspect-square h-[800px] w-full rounded-md object-cover object-center md:aspect-auto"
             src={profileImg}
-            width="600"
-            height="800"
-            alt="portrait image of Huy standing in front of a tree and foliage"
-          /> */}
+            width="500"
+            height="600"
+            alt="portrait image of me"
+          />
         </div>
         <div className="top-20 sm:sticky md:top-28 lg:top-32 md:w-1/2">
           <div className="w-full space-y-4 2xl:space-y-10">
@@ -31,12 +31,13 @@ export default function About() {
               A brief intro, who am I?
             </h3>
             <p ref={body} className="translate-y-10 text-body-1 2xl:text-4xl opacity-0 animate-on-scroll">
-              I am an independent frontend developer and UI/UX designer based in
+              I am an independent fullstack developerbased in
               Nairobi, Kenya.
               <br></br>
-              <br></br>I specialize in crafting elevated, intuitive, and
-              minimalistic designs for startups and small businesses to help
-              them stand out in the digital landscape with a powerful impact. 😎
+              <br></br>I'm a digital architect blending creativity and logic to craft immersive experiences.
+               By day, I turn ideas into reality; by night, I explore cutting-edge tech. More than
+                a developer, I'm a problem solver, storyteller, and innovator, dedicated to writing
+                 beautiful code that powers beautiful experiences. 😎
               <br></br>
               <br></br>
             </p>

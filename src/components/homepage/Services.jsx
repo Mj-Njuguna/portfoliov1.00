@@ -3,20 +3,20 @@ import Heading from "../ui/Heading";
 
 export default function Services() {
   const expertiseItems = [
+    "Mobile Development",
     "Web Development",
-    "Web Design",
     "UI/UX Design",
-    "Branding",
   ];
 
   const toolBoxItems = [
-    "JavaScript",
-    "HTML",
-    "CSS",
-    "Figma",
-    "GSAP",
-    "TailwindCSS",
+    "React native",
     "ReactJS",
+    "Expo",
+    "Figma",
+    "AI",
+    "TailwindCSS",
+    "Heroku",
+    "Javascript",
   ];
 
   return (
@@ -25,14 +25,14 @@ export default function Services() {
       <div className="space-y-14">
         <ServiceUi
           title="my expertises."
-          description="I focus on all things design and web related. With each of my
-          services, my goal is to deliver an impactful and elevating
+          description="I focus on all things development. With each of my
+          service, my goal is to deliver an useful and elevating
           digital experience for everyone."
           items={expertiseItems}
         />
         <ServiceUi
-          title="my digital tool box."
-          description="These are my go to tech stack to make any projects happen. I am always eager of learning more about my current stack, and new technologies that could expand my horizons."
+          title="my go to tools."
+          description="These are my go-to tech stacks for bringing projects to life. I'm always eager to deepen my knowledge of my current stack and explore new technologies that can expand my horizons."
           items={toolBoxItems}
         />
       </div>
