@@ -18,7 +18,7 @@ export default function Works({ forwardedRef }) {
         {/* Project #1 */}
         <div className=" col-span-1 md:col-span-12">
           <Projects
-            link="https://github.com/Mj-Njuguna/STAB"
+            link="https://stab-tau.vercel.app/"
             img={stabmain}
             alt="Stab mobile money platform"
             name="Stab application"
