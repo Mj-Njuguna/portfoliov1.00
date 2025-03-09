@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import profileImg from "/src/assets/images/profile.webp";
+import profileImg from "/src/assets/images/profile.png";
 import Heading from "../ui/Heading";
 import { useFadeInAnimation } from "../../hooks/useAnimations";
 
@@ -31,7 +31,7 @@ export default function About() {
               Who am I?
             </h3>
             <p ref={body} className="translate-y-10 text-body-1 2xl:text-4xl opacity-0 animate-on-scroll">
-              I am an independent fullstack developerbased in
+              I am an independent fullstack developer based in
               Nairobi, Kenya.
               <br></br>
               <br></br>I'm a digital architect blending creativity and logic to craft immersive experiences.
