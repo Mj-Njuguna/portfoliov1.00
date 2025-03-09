@@ -3,13 +3,28 @@ import { useEffect, useState, useRef } from "react";
 import { ScrollTrigger } from "gsap/all";
 import { gsap } from "gsap";
 import Heading from "../ui/Heading";
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const [formStatus, setFormStatus] = useState({
+    submitting: false,
+    submitted: false,
+    error: false,
+    message: '',
+  });
 
-  const heading = useRef(null)
-  const body = useRef(null)
-  const contactSection = useRef(null)
+  const formRef = useRef();
+  const heading = useRef(null);
+  const body = useRef(null);
+  const contactSection = useRef(null);
+  const messageTimeoutRef = useRef(null);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    // This ensures EmailJS is initialized properly
+    emailjs.init("TLVEii9UFlmrp7qh3");
+  }, []);
 
   useEffect(() => {
     ScrollTrigger.create({
@@ -26,13 +41,92 @@ export default function Contact() {
     });
     ScrollTrigger.refresh();
 
-  }, [contactSection])
+  }, [contactSection]);
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       setTime(new Date().toLocaleTimeString());
     }, 1000);
-  });
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Effect to clear message after delay
+  useEffect(() => {
+    if (formStatus.message) {
+      // Clear any existing timeout
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+      
+      // Set a new timeout to clear the message after 5 seconds
+      messageTimeoutRef.current = setTimeout(() => {
+        setFormStatus(prev => ({ ...prev, message: '' }));
+      }, 5000);
+      
+      // Clean up timeout on component unmount
+      return () => {
+        if (messageTimeoutRef.current) {
+          clearTimeout(messageTimeoutRef.current);
+        }
+      };
+    }
+  }, [formStatus.message]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormStatus({ ...formStatus, submitting: true, error: false, message: 'Sending email...' });
+
+    // EmailJS configuration
+    const serviceId = 'service_yvyerhz';
+    const templateId = 'template_16prsc1';
+    const publicKey = 'TLVEii9UFlmrp7qh3';
+
+    // Log form data for debugging
+    const formData = new FormData(formRef.current);
+    console.log('Form data being sent:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    
+    console.log('EmailJS configuration:');
+    console.log(`Service ID: ${serviceId}`);
+    console.log(`Template ID: ${templateId}`);
+    console.log(`Public Key: ${publicKey}`);
+
+    // Create template params object to better control what's being sent
+    const templateParams = {
+      user_name: formRef.current.user_name.value,
+      user_email: formRef.current.user_email.value,
+      message: formRef.current.message.value,
+      to_email: 'njugunamichael.nm@icloud.com', // Add your receiving email explicitly
+    };
+
+    console.log('Template params being sent:');
+    console.log(templateParams);
+
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then((result) => {
+        console.log('Email sent successfully:');
+        console.log(result);
+        setFormStatus({
+          submitting: false,
+          submitted: true,
+          error: false,
+          message: 'Message sent successfully! I will get back to you soon.'
+        });
+        formRef.current.reset();
+      }, (error) => {
+        console.error('Failed to send email:');
+        console.error(error);
+        setFormStatus({
+          submitting: false,
+          submitted: false,
+          error: true,
+          message: `Failed to send message: ${error.text}. Please try again or email me directly.`
+        });
+      });
+  };
 
   return (
     <section
@@ -52,21 +146,19 @@ export default function Contact() {
             I am currently available for freelance work.
           </p>
           <form
+            ref={formRef}
             name="contact"
-            action="/contact"
             autoComplete="off"
-            // eslint-disable-next-line react/no-unknown-property
             className="mt-10 font-grotesk"
-            method="POST" 
+            onSubmit={handleSubmit}
           >
-            <input type="hidden" name="form-name" value="contact"/>
             <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2">
               <div className="relative z-0">
                   <input
                     required
                     type="text"
                     id="name"
-                    name="name"
+                    name="user_name"
                     className="peer block w-full appearance-none border-0 border-b border-accent-100 bg-transparent px-0 py-2.5 focus:outline-none focus:ring-0"
                     placeholder=" "
                   />
@@ -80,8 +172,8 @@ export default function Contact() {
               <div className="relative z-0">
                 <input
                   required
-                  type="text"
-                  name="email"
+                  type="email"
+                  name="user_email"
                   id="email"
                   className="peer block w-full appearance-none border-0 border-b border-accent-100 bg-transparent px-0 py-2.5 focus:outline-none focus:ring-0"
                   placeholder=" "
@@ -110,14 +202,22 @@ export default function Contact() {
                 </label>
               </div>
             </div>
+            
+            {formStatus.message && (
+              <div className={`mt-4 px-4 py-3 rounded-md transition-opacity duration-300 ${formStatus.error ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                {formStatus.message}
+              </div>
+            )}
+            
             <button
               type="submit"
-              className="button group mt-10 border duration-200 hover: hover:bg-transparent"
+              disabled={formStatus.submitting}
+              className={`button group mt-10 border duration-200 hover:bg-transparent ${formStatus.submitting ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
               <span className="relative">
-                <span className="absolute bottom-2 h-1 w-0  opacity-90 duration-300 ease-out group-hover:w-full"></span>
+                <span className="absolute bottom-2 h-1 w-0 opacity-90 duration-300 ease-out group-hover:w-full"></span>
                 <span className="group-hover:text-accent-400">
-                  Send Message
+                  {formStatus.submitting ? 'Sending...' : 'Send Message'}
                 </span>
               </span>
             </button>
@@ -128,7 +228,7 @@ export default function Contact() {
             <h4 className="text-body-1 2xl:text-4xl font-semibold">Contact Details</h4>
             <div className="flex flex-col space-y-3 text-body-2 2xl:text-3xl">
               <a
-                href="mailto:njugunamichael.nm@icloud.com"
+                href="#"
                 className="group relative w-fit cursor-pointer"
                 target="_blank"
                 rel="noreferrer"
@@ -140,20 +240,20 @@ export default function Contact() {
             </div>
           </div>
           <div className="space-y-3 ">
-            <h4 className="text-body-1 2xl:text-4xl font-semibold">My Digital Spaces</h4>
+            <h4 className="text-body-1 2xl:text-4xl font-semibold">My Online Spaces</h4>
             <div className="space-y-3 text-body-2 2xl:text-3xl">
-              {/* <a
-                href="https://bento.me/huyng"
+              <a
+                href="https://wa.me/254708085667"
                 className="group flex items-center space-x-2"
                 target="_blank"
                 rel="noreferrer"
               >
-                <Icon icon="simple-icons:bento" color="#666" />
+                <Icon icon="mdi:whatsapp" color="#666" />
                 <div className="relative">
-                  <span>Bento</span>
+                  <span>WhatsApp</span>
                   <span className="absolute bottom-0 left-0 h-[0.10em] w-0 rounded-full bg-secondary-600 duration-300 ease-in-out group-hover:w-full"></span>
                 </div>
-              </a> */}
+              </a>
               <a
                 href="https://github.com/Mj-Njuguna"
                 className="group flex items-center space-x-2"

@@ -27,7 +27,7 @@ export default function Projects({ name, img, alt, type, link, year, tools, vide
           </div>
         ) : (
           <img
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-contain bg-secondary-300 transition-transform duration-700 ease-in-out group-hover:scale-105"
             src={img}
             alt={alt}
             width="800"

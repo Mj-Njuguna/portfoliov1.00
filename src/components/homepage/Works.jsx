@@ -1,8 +1,7 @@
-import ibgroup from "/src/assets/images/ib-group-desktop.webp";
+import stabmain from "/src/assets/images/stab-main.png";
 import Eshopcrm from "/src/assets/videos/E-shop-crm.mp4";
-import acc from "/src/assets/images/acc-square.webp";
-import daddy from "/src/assets/images/godaddy-desktop.webp";
-import sunnyside from "/src/assets/images/sunnyside-desktop.webp";
+import stabfigma from "/src/assets/images/stab-figma.png";
+import portfolio from "/src/assets/images/portfolio.png";
 import Projects from "../ui/Projects";
 import Heading from "../ui/Heading";
 import Eshopclientside from "/src/assets/videos/E-shop-client-side.mp4";
@@ -19,8 +18,8 @@ export default function Works({ forwardedRef }) {
         {/* Project #1 */}
         <div className=" col-span-1 md:col-span-12">
           <Projects
-            link=""
-            img={ibgroup}
+            link="https://github.com/Mj-Njuguna/STAB"
+            img={stabmain}
             alt="Stab mobile money platform"
             name="Stab application"
             type=" Design • Frontend Development"
@@ -41,19 +40,19 @@ export default function Works({ forwardedRef }) {
             alt="E-shop client side"
             name="e-shop client side"
             type="Frontend Development"
-            year="2025"
+            year="2023"
             tools="Next • TailwindCSS • Shadcn UI"
           />
         </div>
         <div className="col-span-1 pt-0 md:col-span-5 md:pt-80">
           <Projects
-            link="https://realbusinessaccountants.netlify.app"
-            img={acc}
-            alt="real business accountant project mockup"
-            name="real business accountants"
+            link="https://www.figma.com/design/A0kzZqonGliaxViqZZMKWw/STAB?node-id=1-28&t=PnrhgEWSJOTvWTef-1"
+            img={stabfigma}
+            alt="stab mobile app figma mockup design"
+            name="stab application mockup design"
             type="Web Design • Frontend Development"
-            year="2023"
-            tools="HTML • CSS • JavaScript • Figma"
+            year="2024"
+            tools="React Native• TailwindCSS• Figma"
           />
         </div>
         <div className="col-span-1 pt-0 md:col-span-7 md:pt-16">
@@ -67,19 +66,19 @@ export default function Works({ forwardedRef }) {
             alt="E-shop CRM"
             name="e-shop CRM"
             type="Backend Development"
-            year="2025"
+            year="2023"
             tools="Next • Prisma • TypeScript • NextAuth • Neon"
           />
         </div>
         <div className="col-span-1 h-fit md:col-span-4">
         <Projects
-            link="https://sunnysidechallenge.netlify.app"
-            img={sunnyside}
-            alt="sunnyside project mockup"
-            name="SUNNYSIDE LANDING PAGE"
+            link="./"
+            img={portfolio}
+            alt="portfolio mockup"
+            name="personal portfolio "
             type="Frontend Development"
             year="2022"
-            tools="HTML • TailwindCSS • JavaScript"
+            tools="React • GSAP • TailwindCSS • TypeScript "
           />
          
         </div>
